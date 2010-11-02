@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+	JWormBench: a Java benchmark based on WormBench - a synthetic 
+	workload for Transactinal Memory Systems Center www.bscmsrc.eu.
+	Copyright (C) 2010 INESC-ID Software Engineering Group
+	http://www.esw.inesc-id.pt     mcarvalho                                                                
+     ====================================================================== -->
+<project name="JWormBench" default="jar">
+	<description>JWormBench: a Java benchmark based on WormBench</description>
+
+	<!-- ================================= 
+          properties
+         ================================= -->
+	<property name="src.dir" location="src"/>
+	<property name="build.dir" location="bin"/>
+	<property name="dist.dir" location="dist"/>
+	<property name="lib.dir" location="lib"/>
+	<property name="jar.file" value="${dist.dir}/jwormbench.jar"/>
+
+	<!-- ================================= 
+          target: default              
+         ================================= -->
+	<target name="jar" depends="compile" description="Generates the jar with the JWormBench">
+		<mkdir dir="${dist.dir}"/>
+		<jar destfile="${jar.file}" basedir="${build.dir}"/>
+	</target>
+	<target name="compile" description="Compiles the JWormBench source">
+		<mkdir dir="${build.dir}"/>
+		<javac srcdir="${src.dir}" destdir="${build.dir}" extdirs="${lib.dir}"/>
+	</target>
+	<target name="clean-all" description="Removes any generated files">
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+</project>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     2010/10/29 15:25:41                                                        
+
+     JWormBenchApp - a console application to run JwormBench benchmark with
+     different synchronization strategies.                                                           
+     ====================================================================== -->
+<project name="JWormBenchApp" default="jar">
+	<description>
+    	A console application to run JwormBench benchmark with
+    	different synchronization strategies.
+    </description>
+	<!-- ================================= 
+          properties
+    ================================= -->
+	<property name="src.dir" location="src" />
+	<property name="build.dir" location="bin" />
+	<property name="dist.dir" location="dist" />
+	<property name="lib.dir" location="lib" />
+	<property name="jar.file" value="${dist.dir}/jwormApp.jar" />
+	<property name="jwormbench.jar" value="../JWormBench/dist/jwormbench.jar" />
+	<!-- ================================= 
+          target: default              
+    ================================= -->
+	<target name="jar" depends="compile" description="Generates the jar with the JWormBenchApp">
+		<mkdir dir="${dist.dir}" />
+		<jar destfile="${jar.file}" basedir="${build.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="jwormbench.app.ConsoleApp" />
+			</manifest>
+		</jar>
+	</target>
+	<target name="compile" description="Compiles the JWormBenchApp source">
+		<mkdir dir="${build.dir}" />
+		<copy file="${jwormbench.jar}" todir="${lib.dir}" />
+		<javac srcdir="${src.dir}" destdir="${build.dir}" extdirs="${lib.dir}" />
+	</target>
+	<target name="clean-all" description="Removes any generated files">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+</project>
