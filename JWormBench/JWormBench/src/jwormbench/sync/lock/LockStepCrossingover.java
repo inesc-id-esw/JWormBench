@@ -4,7 +4,6 @@ import jwormbench.core.AbstractStep;
 import jwormbench.core.Direction;
 import jwormbench.core.IOperation;
 import jwormbench.core.IWorm;
-import jwormbench.exceptions.NodeAlreadyOccupiedException;
 
 public class LockStepCrossingover extends AbstractStep{
   private static final Object operationLock = new Object();

@@ -7,7 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.google.inject.BindingAnnotation;
 
-
 @BindingAnnotation
 @Target({ElementType.PARAMETER}) 
 @Retention(RetentionPolicy.RUNTIME)

@@ -1,6 +1,5 @@
 package jwormbench.app;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -9,10 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class CommandLineArgumentParser {
-  /**
-   * The character used to distinguish which command lines parameters.
-   */
-  private final String PARAM_SEPARATOR = "-";
   /**
    * Stores the name=value required parameters.
    */
@@ -85,6 +80,7 @@ public class CommandLineArgumentParser {
         String errorMessage = String.format(
             "Error: The optional command line parameter '%s' has no value.",
             param);
+        throw new CommandLineArgumentException(errorMessage);
       }
       CommandLineArgumentParser.optionalParameters.put(tokens[0], tokens[1]);
     }

@@ -49,6 +49,9 @@ public class DefaultOperationFactory implements IOperationFactory {
    */
   @SuppressWarnings("unchecked")
   public <T> IOperation<T> make(OperationKind opKind){
-    return (IOperation<T>) operations.get(opKind);
+    IOperation<T> op = (IOperation<T>) operations.get(opKind);
+    if(op == null)
+      throw new UnsupportedOperationException("Operation not implementes for " + opKind);
+    return op;
   }
 }

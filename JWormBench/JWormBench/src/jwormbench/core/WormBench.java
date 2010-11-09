@@ -46,7 +46,6 @@ public class WormBench {
   private final ILogger logger;
   private final java.util.List<WormThread> wThreads;
   private final IBenchWorld world;
-  private final String syncStrategy;
   private int initWorldSum;
   private int timeoutSeconds;
   private long parallelElapsedTime; 
@@ -67,7 +66,6 @@ public class WormBench {
     this.wThreads = new LinkedList<WormThread>();
     this.logger = logger;
     this.timeoutSeconds = timeoutSeconds;
-    this.syncStrategy = stepsFac.getClass().getSimpleName();
     Iterable<IWorm> worms = wormFac.make(numThreads);
     List<AbstractStep> steps = stepsFac.make();
     int operationsChunkSize = steps.size()/numThreads;
@@ -94,9 +92,9 @@ public class WormBench {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // -------------------   METHODS --------------------- 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  public void RunBenchmark() throws InterruptedException{
+  public void RunBenchmark(String syncStat) throws InterruptedException{
     initWorldSum  = world.getSumOfAllNodes();
-    logger.log(String.format("Benchmark started... World values sum = %d (sync strat = %s)", initWorldSum, syncStrategy));
+    logger.log(String.format("Benchmark started... World values sum = %d (sync strategy = %s)", initWorldSum, syncStat));
     //
     // Spawn a thread for every worm and run one worm on the main thread.
     //
@@ -136,15 +134,15 @@ public class WormBench {
         totalWorkLoad += wt.getStepsCounter();
     }          
     //
-    // Throughput per millisecond
+    // Throughput per second
     //
-    int throughPut = (int)(totalWorkLoad * 1000000 / parallelElapsedTime);
+    int throughPut = (int)(totalWorkLoad * 1000000000 / parallelElapsedTime);
     //
     // [Worms#] [Throughut] [TotalWorkLoad] [ParallelTimeCycles] [ParallelTime] [TotalTimeCycles] [TotalTime] [SynchType] [NxM] [W-Body] [W-Head] [W-BW-Init]
     //
     String logMessage = String.format(
       "threadsNum = %d,\n" +
-      "throughPut per ms = %d,\n" +
+      "throughPut per sec = %d,\n" +
       "totalWorkLoad = %d,\n" +
       "parallelTime = %f secs,\n",
       threadsNum, throughPut, totalWorkLoad, (double)parallelElapsedTime / 1000000000.0);

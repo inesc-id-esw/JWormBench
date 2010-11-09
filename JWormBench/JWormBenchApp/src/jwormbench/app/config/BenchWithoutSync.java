@@ -24,7 +24,6 @@ import jwormbench.setup.IStepSetup;
 import jwormbench.setup.IWormsSetup;
 import jwormbench.setup.StepsFileLoader;
 import jwormbench.setup.WormsFileLoader;
-import jwormbench.sync.lock.LockStepCrossingoverFactory;
 import jwormbench.utils.ILogger;
 
 import com.google.inject.AbstractModule;

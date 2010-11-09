@@ -2,13 +2,11 @@ package jwormbench.sync.jvstm;
 
 import java.util.concurrent.Callable;
 
-import jvstm.CommitException;
 import jvstm.Transaction;
 import jwormbench.core.AbstractStep;
 import jwormbench.core.Direction;
 import jwormbench.core.IOperation;
 import jwormbench.core.IWorm;
-import jwormbench.exceptions.NodeAlreadyOccupiedException;
 
 public class JvstmStep extends AbstractStep{
 

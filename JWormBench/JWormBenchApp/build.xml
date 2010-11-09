@@ -19,6 +19,7 @@
 	<property name="lib.dir" location="lib" />
 	<property name="jar.file" value="${dist.dir}/jwormApp.jar" />
 	<property name="jwormbench.jar" value="../JWormBench/dist/jwormbench.jar" />
+	<property name="artof.jar" value="../../../ArtOf/dist/artof.jar" />
 	<!-- ================================= 
           target: default              
     ================================= -->
@@ -33,6 +34,7 @@
 	<target name="compile" description="Compiles the JWormBenchApp source">
 		<mkdir dir="${build.dir}" />
 		<copy file="${jwormbench.jar}" todir="${lib.dir}" />
+		<copy file="${artof.jar}" todir="${lib.dir}" />
 		<javac srcdir="${src.dir}" destdir="${build.dir}" extdirs="${lib.dir}" />
 	</target>
 	<target name="clean-all" description="Removes any generated files">

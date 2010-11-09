@@ -26,7 +26,6 @@
  */
 package jwormbench.core;
 
-import jwormbench.exceptions.NodeAlreadyOccupiedException;
 import jwormbench.factories.ICoordinateFactory;
 
 

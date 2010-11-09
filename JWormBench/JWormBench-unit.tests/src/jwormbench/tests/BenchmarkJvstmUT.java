@@ -60,7 +60,7 @@ public class BenchmarkJvstmUT {
     // Act - Run on main thread
     // Launch and run worker thread
     //
-    bench.RunBenchmark();
+    bench.RunBenchmark("not sync");
     bench.LogExecutionTime();
     bench.LogConsistencyVerification();
     //

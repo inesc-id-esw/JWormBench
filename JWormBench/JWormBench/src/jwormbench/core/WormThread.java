@@ -62,7 +62,8 @@ public class WormThread extends Thread{
           // then it will returns the difference of that value, to the previous 
           // state before change. In this case the result is an Integer.
           // 
-          accumulatedDiffStateOnWorld += (Integer) step.performStep(worm);  
+          Object res = step.performStep(worm);
+          accumulatedDiffStateOnWorld += (Integer) res;  
         }else{
           //
           // This branch is as original in JWormBEnch

@@ -6,7 +6,6 @@ import jwormbench.core.AbstractStep;
 import jwormbench.core.Direction;
 import jwormbench.core.IOperation;
 import jwormbench.core.IWorm;
-import jwormbench.exceptions.NodeAlreadyOccupiedException;
 import jwormbench.factories.AbstractStepFactory;
 import jwormbench.factories.IOperationFactory;
 import jwormbench.setup.IStepSetup;

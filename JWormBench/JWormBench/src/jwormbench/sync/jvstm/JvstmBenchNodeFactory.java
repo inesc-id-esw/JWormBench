@@ -3,7 +3,6 @@ package jwormbench.sync.jvstm;
 import jvstm.VBox;
 import jwormbench.core.IBenchWorldNode;
 import jwormbench.core.IWorm;
-import jwormbench.exceptions.NodeAlreadyOccupiedException;
 import jwormbench.factories.IBenchWorldNodeFactory;
 
 
