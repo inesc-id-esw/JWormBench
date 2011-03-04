@@ -16,3 +16,10 @@ The WormBench benchmark was built to research new workloads (creating, testing, 
 One of the advantages of WormBench is the ability to create new configurations of the *world*, *worms*, and *worm operations*, producing new workloads with complex contention characteristics and different transaction durations and sizes, without modifying its source-code. The JWormBench keeps this approach and adds two new features important for the research of new workloads and evaluation of STM scalability: (1) the ability to specify the proportion between different kinds of operations, and (2) the ability to set the number of worms independently of the number of threads.  
 
 Furthermore, the JWormBench provides a simple API, easy to integrate with any STM implementation in Java. So, anyone may add a new synchronization mechanism (based on STM or other), implementing the appropriate abstract types and providing those implementations to JWormBench via a configuration *Guice module*. In the same way you can also extend JWomBench with new kinds of *worm operations* without modifying the core JWormBench library.
+
+We also provide JWormBenchApp that is a Java console application that extends the JWormBench framework with some built-in *modules* for several synchronization strategies. The running strategy can be specified by the command line argument `-sync`, which receives one of the following values: 
+* `nosync` - default *module* that provides no synchronization; 
+* `fine-lock` - a fined-grain locking synchronization strategy;
+* `deuce` - DeuceSTM; 
+* `jvstm` - Java Versioned STM; 
+* `boost` - am highly-concurrent transactional version of a linearizable implementation of *node*.
