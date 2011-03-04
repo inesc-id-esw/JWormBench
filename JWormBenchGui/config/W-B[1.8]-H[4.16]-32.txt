@@ -1,0 +1,9 @@
+# WormsCount = 8
+WormID = 1; Name = Worm1; GroupID = 1; HeadSize = 10; Speed = 1; BodyLength = 2; Body = [3,12][3,13]
+# WormID = 2; Name = Worm2; GroupID = 2; HeadSize = 8; Speed = 1; BodyLength = 2; Body = [13,0][12,0]
+WormID = 3; Name = Worm3; GroupID = 3; HeadSize = 4; Speed = 1; BodyLength = 1; Body = [27,15][27,16]
+# WormID = 4; Name = Worm4; GroupID = 4; HeadSize = 4; Speed = 1; BodyLength = 1; Body = [2,6][1,6]
+#WormID = 5; Name = Worm5; GroupID = 5; HeadSize = 7; Speed = 1; BodyLength = 8; Body = [25,22][26,22][26,23][26,24][25,24][24,24][23,24][23,23]
+#WormID = 6; Name = Worm6; GroupID = 6; HeadSize = 10; Speed = 1; BodyLength = 5; Body = [4,9][4,10][3,10][3,9][4,9]
+WormID = 7; Name = Worm7; GroupID = 7; HeadSize = 7; Speed = 1; BodyLength = 4; Body = [11,5][11,6][11,7][10,7]
+# WormID = 8; Name = Worm8; GroupID = 8; HeadSize = 5; Speed = 1; BodyLength = 6; Body = [29,24][29,23][29,22][29,21][29,20][29,19]
