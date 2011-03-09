@@ -23,4 +23,4 @@ We also provide JWormBenchApp that is a Java console application that extends th
 * `fine-lock` - a fined-grain locking synchronization strategy;
 * `deuce` - DeuceSTM; 
 * `jvstm` - Java Versioned STM; 
-* `boost` - am highly-concurrent transactional version of a linearizable implementation of *node*.
+* `boost` - an highly-concurrent transactional version of a linearizable implementation of *node*.
