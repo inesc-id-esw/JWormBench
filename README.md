@@ -14,7 +14,7 @@ One of the advantages of WormBench is the ability to create new configurations o
 
 ## JWormBench Remarks
 
-The JWormBench adds two new features important for the research of new workloads and evaluation of STM scalability: (1) the ability to specify the proportion between different kinds of operations, and (2) the ability to set the number of worms independently of the number of threads.  
+The JWormBench adds two new features important for the research of new workloads and evaluation of STM scalability: (1) the ability to specify the proportion between different kinds of *worm operations*, and (2) the ability to set the number of worms independently of the number of threads.  
 
 Furthermore, the JWormBench provides a simple API, easy to integrate with any STM implementation in Java. So, anyone may add a new synchronization mechanism (based on STM or other), implementing the appropriate abstract types and providing those implementations to JWormBench via a configuration *Guice module*. In the same way you can also extend JWomBench with new kinds of *worm operations* without modifying the core JWormBench library.
 
