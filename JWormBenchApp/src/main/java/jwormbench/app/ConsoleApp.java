@@ -53,7 +53,30 @@ public class ConsoleApp {
   private static final String WORLD_FILENAME_PATTERN = "config/%d.txt";
   private static final String WORMS_FILENAME_PATTERN = "config/W-B[1.1]-H[%s]-%d.txt";
   private static final String NEW_LINE = System.getProperty("line.separator");
+
   
+  private static void printUsage() {
+    System.out.println("USAGE:");
+    System.out.println("java jwormbench.app.ConsoleApp");
+    System.out.print(" -threads <int>");
+    System.out.print(" -iterations <int>");
+    System.out.print(" -world <int>");
+    System.out.print(" -head <string>");
+    System.out.print(" -wRate <string>");
+    System.out.print(" -nrOperations <int>");
+    System.out.print(" -timeout <>"); 
+    System.out.println(" -sync <string>)");
+    System.out.println();
+    System.out.println("OPTIONS");
+    System.out.println(" - threads:  the number of worker threads (1 by default)");
+    System.out.println(" - iterations: the size of the workload is equals to the ‘number of iterations’ times the ‘number of operations’ (1 by default)");
+    System.out.println(" - world: the world’s size (512 by default)");
+    System.out.println(" - head: the size of worms’ head. The number of nodes under the head of the worm is equal to the square of his head’s size.('2.16' by default, meaning the head’s size is between 2 and 16, corresponding to a number of nodes between 4 and 256 nodes)");
+    System.out.println(" - wRate: label for the name of the worm operations configuration file. This file’s name has the following form: < nrOperations>_ops_<wRate>%writes.txt (21 by default, corresponding to an updates rate of 20% and configuration #1)");
+    System.out.println(" - nrOperations: number of operations performed per iteration. This number also determines the name of the worm operations configuration file (1920 by default)");
+    System.out.println(" - timeout: if zero the benchmark just finishes when it completes the total workload (0 by default);");
+    System.out.println(" - sync: the name of a class that defines a Guice module or one of the built-in synchronization strategies: jvstm | lock | fine-lock | deuce | artof-free | artof-lock | tiny-free | tiny-lock (none by default)");
+  }  
   private static void printArguments(
       Logger logger, 
       int nrOfIterations, 
@@ -85,15 +108,17 @@ public class ConsoleApp {
         "-timeout = 0", 
         "-head = 2.16",
         "-world = 512",
-        "-wRate = 51",
+        "-wRate = 21",
         "-nrOperations = 1920",
-        "-sync = deuce" //none | jvstm | lock | artof-free | artof-lock | tiny-free | tiny-lock | deuce
+        "-sync = none" //none | jvstm | lock | fine-lock | deuce | artof-free | artof-lock | tiny-free | tiny-lock
         };
     CommandLineArgumentParser.DefineOptionalParameter(optionalArguments);
     try{
       CommandLineArgumentParser.ParseArguments(args);
     }catch(CommandLineArgumentException e){
-      e.printStackTrace();
+      System.out.println("ERROR parsing arguments: " + e.getMessage());
+      printUsage();
+      System.exit(1);
     }
     String syncStat = CommandLineArgumentParser.GetParamValue("-sync");
     final int nrOfIterations = Integer.parseInt(CommandLineArgumentParser.GetParamValue("-iterations"));

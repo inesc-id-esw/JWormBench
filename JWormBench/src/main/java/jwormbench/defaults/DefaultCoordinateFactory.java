@@ -1,6 +1,6 @@
 package jwormbench.defaults;
 
-import org.deuce.transform.Exclude;
+import org.deuce.transform.NoSync;
 
 import jwormbench.core.ICoordinate;
 import jwormbench.factories.ICoordinateFactory;
@@ -17,8 +17,8 @@ public class DefaultCoordinateFactory implements ICoordinateFactory {
   // --------------- NESTED TYPES  --------------------- 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   private static class Coordinate implements ICoordinate {
-    private int x;
-    private int y;
+    @NoSync private int x;
+    @NoSync private int y;
     /**
      * @see jwormbench.core.ICoordinate#getX()
      */

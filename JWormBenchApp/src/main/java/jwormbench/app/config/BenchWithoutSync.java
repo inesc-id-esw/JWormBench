@@ -1,5 +1,7 @@
 package jwormbench.app.config;
 
+import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import jwormbench.config.params.NrOfIterations;
@@ -43,16 +45,16 @@ public class BenchWithoutSync extends AbstractModule{
     this.configWorms = configWorms;
     this.configWorld = configWorls;
     this.configOperations = configOperations;
+    Logger.getLogger("").getHandlers()[0].setFormatter(new Formatter() {
+      public String format(LogRecord record) {
+        return record.getMessage();
+      }
+    });
   }
-
-
-
   @Override
   protected void configure() {
-    bind(Logger.class)
-      .toInstance(
-          Logger.getLogger(Logger.GLOBAL_LOGGER_NAME));
     //
+    // Coordinates
     //
     bind(ICoordinateFactory.class)
       .to(DefaultCoordinateFactory.class)
