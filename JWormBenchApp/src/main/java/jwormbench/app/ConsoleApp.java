@@ -76,7 +76,7 @@ public class ConsoleApp {
     System.out.println(" - wRate: label for the name of the worm operations configuration file. This file’s name has the following form: < nrOperations>_ops_<wRate>%writes.txt (21 by default, corresponding to an updates rate of 20% and configuration #1)");
     System.out.println(" - nrOperations: number of operations performed per iteration. This number also determines the name of the worm operations configuration file (1920 by default)");
     System.out.println(" - timeout: if zero the benchmark just finishes when it completes the total workload (0 by default);");
-    System.out.println(" - sync: the name of a class that defines a Guice module or one of the built-in synchronization strategies: jvstm | lock | fine-lock | deuce | artof-free | artof-lock | tiny-free | tiny-lock (none by default)");
+    System.out.println(" - sync: the name of a class that defines a Guice module or one of the built-in synchronization strategies: jvstm | lock | finelock | deuce | artof-free | artof-lock | tiny-free | tiny-lock (none by default)");
   }  
   private static void printArguments(
       Logger logger, 
