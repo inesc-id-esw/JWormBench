@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 
 import org.deuce.transaction.ContextDelegator;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -101,7 +102,7 @@ public class ConsoleApp {
     logger.info("----------------------------------------------" + NEW_LINE);
   }
   
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) throws InterruptedException, InstantiationException, IllegalAccessException, ClassNotFoundException {
     String[] optionalArguments = {
         "-iterations = 1",
         "-threads = 2",
@@ -181,10 +182,15 @@ public class ConsoleApp {
       }else if(syncStat.equals("boost")){
         configModule = Modules.override(configModule).with(new BoostSyncModule());
         warmConfigModule = Modules.override(warmConfigModule).with(new BoostSyncModule());
-      }if(syncStat.equals("finelock")){
+      }else if(syncStat.equals("finelock")){
         configModule = Modules.override(configModule).with(new FinelockSyncModule());
         warmConfigModule = Modules.override(warmConfigModule).with(new FinelockSyncModule());
-      }       
+      }else{
+        System.err.println("Unrecognized sync strategy. Will try to load a Java Class with that name as a Guice module.");
+        AbstractModule module = (AbstractModule) Class.forName(syncStat).newInstance();
+        configModule = Modules.override(configModule).with(module);
+        warmConfigModule = Modules.override(warmConfigModule).with(module);
+      }
       Injector injector = Guice.createInjector(configModule );
       Injector warmInjector = Guice.createInjector(warmConfigModule);
       benchRollout = injector.getInstance(WormBench.class);
