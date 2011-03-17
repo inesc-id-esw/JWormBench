@@ -21,7 +21,7 @@ Furthermore, the JWormBench provides a simple API, easy to integrate with any ST
 We also provide JWormBenchApp that is a Java console application that extends the JWormBench framework with some built-in *modules* for several synchronization strategies. The running strategy can be specified by the command line argument `-sync`, which receives one of the following values: 
 
 * `nosync` - default *module* that provides no synchronization; 
-* `fine-lock` - a fined-grain locking synchronization strategy;
+* `finelock` - a fined-grain locking synchronization strategy;
 * `deuce` - DeuceSTM; 
 * `jvstm` - Java Versioned STM; 
 * `boost` - an highly-concurrent transactional version of a linearizable implementation of *node*.
