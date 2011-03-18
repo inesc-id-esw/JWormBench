@@ -18,7 +18,7 @@ The JWormBench adds two new features important for the research of new workloads
 
 Furthermore, the JWormBench provides a simple API, easy to integrate with any STM implementation in Java. So, anyone may add a new synchronization mechanism (based on STM or other), implementing the appropriate abstract types and providing those implementations to JWormBench via a configuration *Guice module*. In the same way you can also extend JWomBench with new kinds of *worm operations* without modifying the core JWormBench library.
 
-We also provide JWormBenchApp that is a Java console application that extends the JWormBench framework with some built-in *modules* for several synchronization strategies. The running strategy can be specified by the command line argument `-sync`, which receives one of the following values: 
+We also provide [wiki:Running-JWormBenchApp JWormBenchApp] that is a Java console application that extends the JWormBench framework with some built-in *modules* for several synchronization strategies. The running strategy can be specified by the command line argument `-sync`, which receives one of the following values: 
 
 * `nosync` - default *module* that provides no synchronization; 
 * `finelock` - a fined-grain locking synchronization strategy;
