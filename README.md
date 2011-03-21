@@ -25,3 +25,15 @@ We also provide [JWormBenchApp](https://github.com/inesc-id-esw/JWormBench/wiki/
 * `deuce` - DeuceSTM; 
 * `jvstm` - Java Versioned STM; 
 * `boost` - an highly-concurrent transactional version of a linearizable implementation of *node*.
+
+Finally, despite being a port of WormBench, the JWormbench has some key differences from the former:
+
+1. The STM integration on WormBench is based on macros and requires pre-compilation speciﬁc for each STM API. The JWormBench uses an approach that is based on _inversion of control_, _abstract factory_ and _factory method_ design patterns.
+
+2. The core engine of the JWormBench benchmark is deployed in a separate and independent library, whose features can be extended with other libraries. For instance, in WormBench is impossible to add new kinds of _worm operations_ without modifying its source-code, whereas in JWormBench we can do it by implementing the new _operations_ as separate classes and the corresponding _factory_.
+
+3. Unlike JWormBench, the WormBench distribution does not implement the correctness test (i.e. sanity check for the STM system) based on the results accumulated on each thread’s private buffer.
+
+4. In WormBench it is not easy to maintain the same contention scenario when varying the number of threads. In JWormBench the number of threads is totally decoupled from the environment speciﬁcation and we can maintain the same conditions along different numbers of worker threads.
+
+5. The operations generator tool in JWormBench allows us to specify the proportion between each kind of operation. This feature is essential to produce workloads with different ratios of update operations.
