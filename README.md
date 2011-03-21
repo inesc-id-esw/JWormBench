@@ -2,7 +2,7 @@
 
 ## About
 
-JWormBench is a port of the WormBench benchmark from C# to Java. This port extends the original benchmark in several
+[JWormBench](https://github.com/inesc-id-esw/JWormBench/wiki) is a port of the WormBench benchmark from C# to Java. This port extends the original benchmark in several
 ways, making it more useful as a testbed for evaluating STMs. Moreover, our port, which we called JWormBench, was designed to be easily extensible and to allow easy integration with different STMs.
 
 
