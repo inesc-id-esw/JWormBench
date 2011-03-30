@@ -40,6 +40,7 @@ import jwormbench.app.config.BenchWithoutSync;
 import jwormbench.app.config.BoostSyncModule;
 import jwormbench.app.config.DeuceSyncModule;
 import jwormbench.app.config.FinelockSyncModule;
+import jwormbench.app.config.JvstmDblLayoutSyncModule;
 import jwormbench.app.config.JvstmSyncModule;
 import jwormbench.app.config.LockSyncModule;
 import jwormbench.app.config.ArtOfTmContentionManagerModule;
@@ -159,12 +160,18 @@ public class ConsoleApp {
           configOperations
       );
       Module warmConfigModule = new BenchWithoutSync(1,2,0,configWorms,configWorld,configOperations);
-      if(syncStat.equals("lock")){
+      if(syncStat.equals("none")){
+        //then there is nothing to override.
+      }
+      else if(syncStat.equals("lock")){
         configModule = Modules.override(configModule).with(new LockSyncModule());
         warmConfigModule = Modules.override(warmConfigModule ).with(new LockSyncModule());
       }else if(syncStat.equals("jvstm")){
         configModule = Modules.override(configModule).with(new JvstmSyncModule());
         warmConfigModule = Modules.override(warmConfigModule ).with(new JvstmSyncModule());
+      }else if(syncStat.equals("jvstmdbl")){
+        configModule = Modules.override(configModule).with(new JvstmDblLayoutSyncModule());
+        warmConfigModule = Modules.override(warmConfigModule ).with(new JvstmDblLayoutSyncModule());
       }else if(syncStat.equals("artof-free")){
         artof.core.Defaults.setModule(new ArtOfTmContentionManagerModule(1, 10));
         configModule = Modules.override(configModule).with(new ArtOfTmFreeSyncModule());
