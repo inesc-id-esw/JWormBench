@@ -21,9 +21,12 @@ Furthermore, the JWormBench provides a simple API, easy to integrate with any ST
 We also provide [JWormBenchApp](https://github.com/inesc-id-esw/JWormBench/wiki/Running-JWormBenchApp) that is a Java console application that extends the JWormBench framework with some built-in *modules* for several synchronization strategies. The running strategy can be specified by the command line argument `-sync`, which receives one of the following values: 
 
 * `nosync` - default *module* that provides no synchronization; 
+* `flock` - a coarse-grain locking synchronization strategy;
 * `finelock` - a fined-grain locking synchronization strategy;
-* `deuce` - DeuceSTM; 
-* `jvstm` - Java Versioned STM; 
+* `jvstm` - Java Versioned STM (requires jvstm.jar or any other that implements the JVSTM API); 
+* `deuce` - DeuceSTM (requires one of the available versions of Deuce STM: e.g. deuceAgent-1.3.0.jar); 
+* `artof-free` - (requires artof.jar);
+* `artof-lock` - (requires artof.jar);
 * `boost` - an highly-concurrent transactional version of a linearizable implementation of *node*.
 
 Finally, despite being a port of WormBench, the JWormbench has some key differences from the former:
