@@ -49,7 +49,7 @@ public class WormBench {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   private final Logger logger;
   private final java.util.List<WormThread> wThreads;
-  private final IWorld world;
+  public final IWorld world;
   private int initWorldSum;
   private int timeoutSeconds;
   private long parallelElapsedTime; 

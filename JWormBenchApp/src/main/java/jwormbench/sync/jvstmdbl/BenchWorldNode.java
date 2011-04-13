@@ -2,7 +2,6 @@ package jwormbench.sync.jvstmdbl;
 
 import jvstm.VBox;
 import jvstm.dblayout.AbstractAtomic;
-import jvstm.reflection.UnsafeHolder;
 import jwormbench.core.INode;
 import jwormbench.core.IWorm;
 
@@ -11,13 +10,13 @@ import jwormbench.core.IWorm;
  * 
  * @author F. Miguel Carvalho mcarvalho[@]cc.isel.pt 
  */
-class BenchWorldNode implements INode {
-  private static final long value__ADDRESS__;
-  private static final long vbox_value__ADDRESS__;
+public class BenchWorldNode implements INode {
+  private static final int value__ADDRESS__;
+  private static final int value_vbox__ADDRESS__;
   static{
     try {
-      value__ADDRESS__ = UnsafeHolder.getUnsafe().objectFieldOffset(BenchWorldNode.class.getDeclaredField("value"));
-      vbox_value__ADDRESS__ = UnsafeHolder.getUnsafe().objectFieldOffset(BenchWorldNode.class.getDeclaredField("vbox_value"));
+      value__ADDRESS__ = (int) UnsafeHolder.getUnsafe().objectFieldOffset(BenchWorldNode.class.getDeclaredField("value"));
+      value_vbox__ADDRESS__ = (int) UnsafeHolder.getUnsafe().objectFieldOffset(BenchWorldNode.class.getDeclaredField("value_vbox"));
     } catch (SecurityException e) {
       throw new RuntimeException(e);
     } catch (NoSuchFieldException e) {
@@ -28,10 +27,9 @@ class BenchWorldNode implements INode {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // ---------------------- FIELDS --------------------- 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  private VBox<Integer> vbox_value;
+  public VBox<?> value_vbox;
   private int value;
   private IWorm worm;
-
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // -------------------   CONSTRUCTOR ----------------- 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,16 +41,22 @@ class BenchWorldNode implements INode {
   // -------------------   PROPERTIES  ----------------- 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   /**
+   * For debug purpose.
+   */
+  public VBox<?> getVBox(){
+    return value_vbox;
+  }
+  /**
    * @see wormbench.INode#getValue()
    */
   public int getValue() {
-    return AbstractAtomic.onReadAccess(this, value, vbox_value__ADDRESS__);
+    return AbstractAtomic.onReadAccess(this, value, value_vbox__ADDRESS__);
   }
   /**
    * @see wormbench.INode#setValue(int)
    */
   public void setValue(int newValue) {
-    AbstractAtomic.onWriteAccess(this, newValue, value__ADDRESS__, vbox_value__ADDRESS__);
+    AbstractAtomic.onWriteAccess(this, newValue, value__ADDRESS__, value_vbox__ADDRESS__);
   }
   /**
    * @see wormbench.INode#getWorm()

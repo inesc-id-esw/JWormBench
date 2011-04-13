@@ -36,6 +36,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
 
+import jvstm.dblayout.WriteFieldAccess;
 import jwormbench.app.config.BenchWithoutSync;
 import jwormbench.app.config.BoostSyncModule;
 import jwormbench.app.config.DeuceSyncModule;
@@ -48,6 +49,7 @@ import jwormbench.app.config.ArtOfTmFreeSyncModule;
 import jwormbench.app.config.ArtOfTmLockSyncModule;
 import jwormbench.app.config.TinyTmFreeSyncModule;
 import jwormbench.app.config.TinyTmLockSyncModule;
+import jwormbench.core.IWorld;
 import jwormbench.core.WormBench;
 
 public class ConsoleApp {
@@ -77,7 +79,15 @@ public class ConsoleApp {
     System.out.println(" - wRate: label for the name of the worm operations configuration file. This file’s name has the following form: < nrOperations>_ops_<wRate>%writes.txt (21 by default, corresponding to an updates rate of 20% and configuration #1)");
     System.out.println(" - nrOperations: number of operations performed per iteration. This number also determines the name of the worm operations configuration file (1920 by default)");
     System.out.println(" - timeout: if zero the benchmark just finishes when it completes the total workload (0 by default);");
-    System.out.println(" - sync: the name of a class that defines a Guice module or one of the built-in synchronization strategies: jvstm | lock | finelock | deuce | artof-free | artof-lock | tiny-free | tiny-lock (none by default)");
+    System.out.println(" - sync: the name of a class that defines a Guice module or one of the built-in synchronization strategies:");
+    System.out.println("     none (by default)");
+    System.out.println("     lock");
+    System.out.println("     finelock");
+    System.out.println("     jvstm (requires jvstm.jar or any other that implements the JVSTM API)");
+    System.out.println("     deuce (requires one of the available versions of Deuce STM: e.g. deuceAgent-1.3.0.jar");
+    System.out.println("     artof-free (requires artof.jar)");
+    System.out.println("     artof-lock (requires artof.jar)");
+    System.out.println("     boost (requires artof.jar)");
   }  
   private static void printArguments(
       Logger logger, 
@@ -208,14 +218,34 @@ public class ConsoleApp {
     // WarmUp 
     //
     printArguments(logger, nrOfIterations, nrOfThreads, wRate, nrOperations, syncStat, worldSize, headSize);
-    logger.info("Warming up..." + NEW_LINE);
-    benchWarmUp.RunBenchmark(syncStat );
-    logger.info("Warm Up Finish!" + NEW_LINE);
+    //logger.info("Warming up..." + NEW_LINE);
+    //benchWarmUp.RunBenchmark(syncStat );
+    //logger.info("Warm Up Finish!" + NEW_LINE);
     //
     // Run 
     // 
     benchRollout.RunBenchmark(syncStat);
     benchRollout.LogExecutionTime();
-    benchRollout.LogConsistencyVerification();    
+    benchRollout.LogConsistencyVerification();
+    //
+    // Evaluate nr of objects in Normal <vs> Extended Layout
+    //
+    if(syncStat.equals("jvstmdbl")){
+      IWorld world = benchRollout.world;
+      int nrObjectsNormal = 0, nrObjectsExtended = 0;
+      for (int i = 0; i < world.getRowsNum(); i++) {
+        for (int j = 0; j < world.getColumnsNum(); j++) {
+          jwormbench.sync.jvstmdbl.BenchWorldNode node = (jwormbench.sync.jvstmdbl.BenchWorldNode) world.getNode(i, j);
+          if(node.getVBox() != null)
+            nrObjectsExtended++;
+          else
+            nrObjectsNormal++;
+        }
+      }
+      System.out.println("Nr objects extended: " + nrObjectsExtended);
+      System.out.println("Nr objects normal: " + nrObjectsNormal);
+      System.out.println("Nr of extensions: " + WriteFieldAccess.nrOfExtensions);
+      System.out.println("Nr of reversions: " + WriteFieldAccess.nrOfReversions);
+    }
   }
 }

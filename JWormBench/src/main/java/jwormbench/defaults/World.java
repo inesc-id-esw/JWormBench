@@ -63,8 +63,8 @@ public class World implements IWorld {
   @Override
   public int getSumOfAllNodes() {
     int total = 0;
-    for (int i = 0; i < getColumnsNum(); i++) {
-      for (int j = 0; j < getRowsNum(); j++) {
+    for (int i = 0; i < getRowsNum(); i++) {
+      for (int j = 0; j < getColumnsNum(); j++) {
         total += world[i][j].getValue();
       }
     }
