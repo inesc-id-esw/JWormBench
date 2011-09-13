@@ -57,6 +57,16 @@ public class ConsoleApp {
   private static final String WORLD_FILENAME_PATTERN = "config/%d.txt";
   private static final String WORMS_FILENAME_PATTERN = "config/W-B[1.1]-H[%s]-%d.txt";
   private static final String NEW_LINE = System.getProperty("line.separator");
+  private static final String[] optionalArguments = {
+      "-iterations = 64",
+      "-threads = 8",
+      "-timeout = 0", 
+      "-head = 2.16",
+      "-world = 512",
+      "-wRate = 21",
+      "-nrOperations = 1920",
+      "-sync = jvstm" //none | jvstm | lock | finelock | deuce | artof-free | artof-lock | tiny-free | tiny-lock
+      };
 
   
   private static void printUsage() {
@@ -84,7 +94,7 @@ public class ConsoleApp {
     System.out.println("     lock");
     System.out.println("     finelock");
     System.out.println("     jvstm (requires jvstm.jar or any other that implements the JVSTM API)");
-    System.out.println("     deuce (requires one of the available versions of Deuce STM: e.g. deuceAgent-1.3.0.jar");
+    System.out.println("     deuce (requires one of the available versions of Deuce STM: e.g. deuceAgent-1.3.0.jar)");
     System.out.println("     artof-free (requires artof.jar)");
     System.out.println("     artof-lock (requires artof.jar)");
     System.out.println("     boost (requires artof.jar)");
@@ -114,16 +124,6 @@ public class ConsoleApp {
   }
   
   public static void main(String[] args) throws InterruptedException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-    String[] optionalArguments = {
-        "-iterations = 1",
-        "-threads = 2",
-        "-timeout = 0", 
-        "-head = 2.16",
-        "-world = 512",
-        "-wRate = 21",
-        "-nrOperations = 1920",
-        "-sync = none" //none | jvstm | lock | fine-lock | deuce | artof-free | artof-lock | tiny-free | tiny-lock
-        };
     CommandLineArgumentParser.DefineOptionalParameter(optionalArguments);
     try{
       CommandLineArgumentParser.ParseArguments(args);

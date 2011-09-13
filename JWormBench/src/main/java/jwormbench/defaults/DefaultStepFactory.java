@@ -18,13 +18,6 @@ public class DefaultStepFactory extends AbstractStepFactory{
     super(opsSetup, opsFac);
   }
   protected IStep factoryMethod(IOperation<?> op, Direction direction){
-    return new AbstractStep(direction, op){
-      public Object performStep(IWorm worm){
-        Object res = op.performOperation(worm);
-        worm.move(direction);
-        worm.updateWorldUnderWorm();   
-        return res;
-      }
-    };
+    return new DefaultStep(direction, op);
   }
 }
