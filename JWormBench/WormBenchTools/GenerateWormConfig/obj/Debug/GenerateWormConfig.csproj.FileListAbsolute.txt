@@ -1,0 +1,6 @@
+D:\MyFolder\IST\PhD\03-.net-projects\WormBench-v1.0-r23112008\Tools\GenerateWormConfig\bin\Debug\GenerateWormConfig.exe
+D:\MyFolder\IST\PhD\03-.net-projects\WormBench-v1.0-r23112008\Tools\GenerateWormConfig\bin\Debug\GenerateWormConfig.pdb
+D:\MyFolder\IST\PhD\03-.net-projects\WormBench-v1.0-r23112008\Tools\GenerateWormConfig\bin\Debug\Bsc.CommandLineArgumentParser.dll
+D:\MyFolder\IST\PhD\03-.net-projects\WormBench-v1.0-r23112008\Tools\GenerateWormConfig\obj\Debug\ResolveAssemblyReference.cache
+D:\MyFolder\IST\PhD\03-.net-projects\WormBench-v1.0-r23112008\Tools\GenerateWormConfig\obj\Debug\GenerateWormConfig.exe
+D:\MyFolder\IST\PhD\03-.net-projects\WormBench-v1.0-r23112008\Tools\GenerateWormConfig\obj\Debug\GenerateWormConfig.pdb
