@@ -60,12 +60,12 @@ public class ConsoleApp {
   private static final String WORMS_FILENAME_PATTERN = "config/W-B[1.1]-H[%s]-%d.txt";
   private static final String NEW_LINE = System.getProperty("line.separator");
   private static final String[] optionalArguments = {
-    "-iterations = 512",
+    "-iterations = 2048",
     "-threads = 4",
     "-timeout = 0", 
     "-head = 2.16",
     "-world = 512",
-    "-wRate = 23",
+    "-wRate = 22",
     "-nrOperations = 1920",
     "-sync = jvstmdbl" //none | jvstm | lock | finelock | deuce | artof-free | artof-lock | tiny-free | tiny-lock
   };
