@@ -1,5 +1,0 @@
-D:\MyFolder\IST\PhD\03-.net-projects\WormBench-v1.0-r23112008\Tools\RandomBenchWorldGenerator\bin\Debug\RandomBenchWorldGenerator.exe
-D:\MyFolder\IST\PhD\03-.net-projects\WormBench-v1.0-r23112008\Tools\RandomBenchWorldGenerator\bin\Debug\RandomBenchWorldGenerator.pdb
-D:\MyFolder\IST\PhD\03-.net-projects\WormBench-v1.0-r23112008\Tools\RandomBenchWorldGenerator\obj\Debug\ResolveAssemblyReference.cache
-D:\MyFolder\IST\PhD\03-.net-projects\WormBench-v1.0-r23112008\Tools\RandomBenchWorldGenerator\obj\Debug\RandomBenchWorldGenerator.exe
-D:\MyFolder\IST\PhD\03-.net-projects\WormBench-v1.0-r23112008\Tools\RandomBenchWorldGenerator\obj\Debug\RandomBenchWorldGenerator.pdb

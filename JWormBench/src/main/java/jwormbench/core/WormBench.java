@@ -107,18 +107,22 @@ public class WormBench {
   public void RunBenchmark(String syncStat) throws InterruptedException{
     initWorldSum  = world.getSumOfAllNodes();
     logger.info(String.format("Benchmark started... World values sum = %d (sync strategy = %s)%s", initWorldSum, syncStat, NEW_LINE));
+    Thread[] ths = new Thread[wThreads.size()]; 
     //
     // Spawn a thread for every worm and run one worm on the main thread.
     //
+    int i = 0;
     for (WormThread wt : wThreads) {
-      wt.start();
+      ths[i] = new Thread(wt);
+      ths[i].start();
+      i++;
     }
     long parallelTimeStart = System.nanoTime();
     if (timeoutSeconds > 0){
       //
       // Set the timeout. So that the threads exit normally and not by enforcing.
       //
-      for (WormThread wt : wThreads) {
+      for (Thread wt : ths) {
         wt.join(timeoutSeconds*1000);
         long elapsedTime = System.nanoTime() - parallelTimeStart;
         if(elapsedTime > timeoutSeconds) break;
@@ -128,7 +132,7 @@ public class WormBench {
       }
     }
     else{
-      for (WormThread wt : wThreads) {
+      for (Thread wt : ths) {
         wt.join();
       }      
     }

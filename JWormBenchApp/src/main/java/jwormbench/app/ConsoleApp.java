@@ -36,12 +36,14 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
 
-import jvstm.dblayout.WriteFieldAccess;
+import jvstm.dblcore.ActiveTransactionsRecord;
+import jvstm.dblcore.Transaction;
 import jwormbench.app.config.BenchWithoutSync;
 import jwormbench.app.config.BoostSyncModule;
 import jwormbench.app.config.DeuceSyncModule;
 import jwormbench.app.config.FinelockSyncModule;
 import jwormbench.app.config.JvstmDblLayoutSyncModule;
+import jwormbench.app.config.JvstmExtendedtSyncModule;
 import jwormbench.app.config.JvstmSyncModule;
 import jwormbench.app.config.LockSyncModule;
 import jwormbench.app.config.ArtOfTmContentionManagerModule;
@@ -58,17 +60,17 @@ public class ConsoleApp {
   private static final String WORMS_FILENAME_PATTERN = "config/W-B[1.1]-H[%s]-%d.txt";
   private static final String NEW_LINE = System.getProperty("line.separator");
   private static final String[] optionalArguments = {
-      "-iterations = 64",
-      "-threads = 8",
-      "-timeout = 0", 
-      "-head = 2.16",
-      "-world = 512",
-      "-wRate = 21",
-      "-nrOperations = 1920",
-      "-sync = jvstm" //none | jvstm | lock | finelock | deuce | artof-free | artof-lock | tiny-free | tiny-lock
-      };
+    "-iterations = 512",
+    "-threads = 4",
+    "-timeout = 0", 
+    "-head = 2.16",
+    "-world = 512",
+    "-wRate = 23",
+    "-nrOperations = 1920",
+    "-sync = jvstmdbl" //none | jvstm | lock | finelock | deuce | artof-free | artof-lock | tiny-free | tiny-lock
+  };
 
-  
+
   private static void printUsage() {
     System.out.println("USAGE:");
     System.out.println("java jwormbench.app.ConsoleApp");
@@ -122,7 +124,7 @@ public class ConsoleApp {
     logger.info(logMessage + NEW_LINE);    
     logger.info("----------------------------------------------" + NEW_LINE);
   }
-  
+
   public static void main(String[] args) throws InterruptedException, InstantiationException, IllegalAccessException, ClassNotFoundException {
     CommandLineArgumentParser.DefineOptionalParameter(optionalArguments);
     try{
@@ -154,7 +156,7 @@ public class ConsoleApp {
       // DeuceSTM corrupts all constructors and damage Guice functionality,
       // then we can not use a regular Guice module. :-p
       //
-      benchWarmUp = DeuceSyncModule.configure(1,2,0,configWorms,configWorld,configOperations);
+      benchWarmUp = DeuceSyncModule.configure(512,2,0,configWorms,configWorld,configOperations);
       benchRollout = DeuceSyncModule.configure(nrOfIterations,nrOfThreads,timeOut,configWorms,configWorld,configOperations);
       logger = DeuceSyncModule.getLogger();
     }else{
@@ -169,7 +171,13 @@ public class ConsoleApp {
           configWorld,
           configOperations
       );
-      Module warmConfigModule = new BenchWithoutSync(1,2,0,configWorms,configWorld,configOperations);
+      Module warmConfigModule = new BenchWithoutSync(
+          1, // number of iterations
+          1, // number of threads
+          0, // time out
+          configWorms,
+          configWorld,
+          configOperations);
       if(syncStat.equals("none")){
         //then there is nothing to override.
       }
@@ -182,6 +190,9 @@ public class ConsoleApp {
       }else if(syncStat.equals("jvstmdbl")){
         configModule = Modules.override(configModule).with(new JvstmDblLayoutSyncModule());
         warmConfigModule = Modules.override(warmConfigModule ).with(new JvstmDblLayoutSyncModule());
+      }else if(syncStat.equals("jvstmext")){
+        configModule = Modules.override(configModule).with(new JvstmExtendedtSyncModule());
+        warmConfigModule = Modules.override(warmConfigModule ).with(new JvstmExtendedtSyncModule());
       }else if(syncStat.equals("artof-free")){
         artof.core.Defaults.setModule(new ArtOfTmContentionManagerModule(1, 10));
         configModule = Modules.override(configModule).with(new ArtOfTmFreeSyncModule());
@@ -218,34 +229,48 @@ public class ConsoleApp {
     // WarmUp 
     //
     printArguments(logger, nrOfIterations, nrOfThreads, wRate, nrOperations, syncStat, worldSize, headSize);
-    //logger.info("Warming up..." + NEW_LINE);
-    //benchWarmUp.RunBenchmark(syncStat );
-    //logger.info("Warm Up Finish!" + NEW_LINE);
+    logger.info("Warming up..." + NEW_LINE);
+    benchRollout.RunBenchmark(syncStat );
+    printNrOfObjectsExtendedAnStandard(logger, syncStat, benchRollout);
+    logger.info("Warm Up Finish!" + NEW_LINE);
+    logger.info("------------------------------------------------------"+ NEW_LINE);
+    logger.info("------------------------------------------------------"+ NEW_LINE);
     //
     // Run 
     // 
+    printNrOfObjectsExtendedAnStandard(logger, syncStat, benchRollout);
     benchRollout.RunBenchmark(syncStat);
     benchRollout.LogExecutionTime();
     benchRollout.LogConsistencyVerification();
+    printNrOfObjectsExtendedAnStandard(logger, syncStat, benchRollout);
     //
     // Evaluate nr of objects in Normal <vs> Extended Layout
     //
+    // System.out.println("Nr of extensions: " + WriteFieldAccess.nrOfExtensions);
+    // System.out.println("Nr of reversions: " + WriteFieldAccess.nrOfReversions);
+  }
+  private static void printNrOfObjectsExtendedAnStandard(Logger logger, String syncStat, WormBench benchRollout ){
     if(syncStat.equals("jvstmdbl")){
       IWorld world = benchRollout.world;
       int nrObjectsNormal = 0, nrObjectsExtended = 0;
       for (int i = 0; i < world.getRowsNum(); i++) {
         for (int j = 0; j < world.getColumnsNum(); j++) {
           jwormbench.sync.jvstmdbl.BenchWorldNode node = (jwormbench.sync.jvstmdbl.BenchWorldNode) world.getNode(i, j);
-          if(node.getVBox() != null)
+          if(node.readHeader() != null)
             nrObjectsExtended++;
           else
             nrObjectsNormal++;
         }
       }
-      System.out.println("Nr objects extended: " + nrObjectsExtended);
-      System.out.println("Nr objects normal: " + nrObjectsNormal);
-      System.out.println("Nr of extensions: " + WriteFieldAccess.nrOfExtensions);
-      System.out.println("Nr of reversions: " + WriteFieldAccess.nrOfReversions);
+      logger.info("Nr objects extended: " + nrObjectsExtended + NEW_LINE);
+      logger.info("Nr objects normal: " + nrObjectsNormal+ NEW_LINE);
+      // logger.info("Nr of reversions: " + LayoutReverser.nrOfReversions+ NEW_LINE);
+      // logger.info("Nr of reversions: " + ActiveTransactionsRecord.nrOfReversions + NEW_LINE);
+      logger.info("Nr of aborted trxs: " + Transaction.nrOfAborts+ NEW_LINE);
+      // System.out.println("Nr of aborted trxs by TopLevelCounter: " + TopLevelCounter.nrAborts );
+      Transaction.nrOfAborts = 0;
+      // TopLevelCounter.nrAborts = 0;
     }
   }
 }
+

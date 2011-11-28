@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class WormThread extends Thread{
+public class WormThread implements Runnable{
   public static final int RESULTS_QUEUE_LIMIT = 200;
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // ---------------------- FIELDS --------------------- 
@@ -55,6 +55,9 @@ public class WormThread extends Thread{
   }
   @Override
   public void run() {
+    for (int i = 0; i < stepsCounter.length; i++) {
+     stepsCounter[i] = 0;
+    }
     for (int j = 0; (j < iterations) && !timedOut; j++) {
       for (IStep step : operations) {
         if(timedOut) break;

@@ -1,33 +1,50 @@
 package jwormbench.sync.jvstmdbl;
 
-import jvstm.VBox;
-import jvstm.dblayout.AbstractAtomic;
+import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import sun.misc.Unsafe;
+import jvstm.dblayout.AbstractDoubleLayout;
+import jvstm.dblayout.DoubleLayout;
+import jvstm.dblcore.VBox;
+import jvstm.dblcore.VBoxBody;
+import jvstm.reflection.UnsafeHolder;
 import jwormbench.core.INode;
 import jwormbench.core.IWorm;
+
 
 /**
  * Abstracts the node object within the BenchWorld.
  * 
  * @author F. Miguel Carvalho mcarvalho[@]cc.isel.pt 
  */
-public class BenchWorldNode implements INode {
-  private static final int value__ADDRESS__;
-  private static final int value_vbox__ADDRESS__;
+public class BenchWorldNode extends AbstractDoubleLayout implements INode, DoubleLayout{
+  
+  private static final int value__INDEX__ = 0;
+  private static final long value__ADDRESS__;
   static{
     try {
-      value__ADDRESS__ = (int) UnsafeHolder.getUnsafe().objectFieldOffset(BenchWorldNode.class.getDeclaredField("value"));
-      value_vbox__ADDRESS__ = (int) UnsafeHolder.getUnsafe().objectFieldOffset(BenchWorldNode.class.getDeclaredField("value_vbox"));
+      value__ADDRESS__ = UnsafeHolder.getUnsafe().objectFieldOffset(BenchWorldNode.class.getDeclaredField("value"));
     } catch (SecurityException e) {
       throw new RuntimeException(e);
     } catch (NoSuchFieldException e) {
       throw new RuntimeException(e);
     }
   }
-  
+
+  @Override
+  public Object[] toExtendedLayout() {
+    return new Object[]{this.value};
+  }
+  @Override
+  public void toStandardLayout(Object[] from) {
+    this.value = (Integer) from[0];
+  }
+
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // ---------------------- FIELDS --------------------- 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  public VBox<?> value_vbox;
   private int value;
   private IWorm worm;
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,22 +58,24 @@ public class BenchWorldNode implements INode {
   // -------------------   PROPERTIES  ----------------- 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   /**
-   * For debug purpose.
-   */
-  public VBox<?> getVBox(){
-    return value_vbox;
-  }
-  /**
    * @see wormbench.INode#getValue()
    */
   public int getValue() {
-    return AbstractAtomic.onReadAccess(this, value, value_vbox__ADDRESS__);
+    // The explicit cast from int to Object it is not required, 
+    // but I made it to avoid reordering mistakes between the 
+    // fieldIndex and filedValue arguments.
+    //
+    return VBox.getInt(this, value__INDEX__, value__ADDRESS__);
   }
   /**
    * @see wormbench.INode#setValue(int)
    */
   public void setValue(int newValue) {
-    AbstractAtomic.onWriteAccess(this, newValue, value__ADDRESS__, value_vbox__ADDRESS__);
+    // The explicit cast from int to Object it is not required, 
+    // but I made it to avoid reordering mistakes between the 
+    // fieldIndex and filedValue arguments.
+    //
+    VBox.put((Object) newValue, this, value__INDEX__, 1);
   }
   /**
    * @see wormbench.INode#getWorm()
@@ -74,6 +93,6 @@ public class BenchWorldNode implements INode {
       throw new NodeAlreadyOccupiedException(
           String.format("Worm %s can not move to node with worm %s", w.getName(), worm.get().getName()));
     worm.put(w);
-    */
+     */
   }
 }

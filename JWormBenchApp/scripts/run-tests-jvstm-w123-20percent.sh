@@ -3,11 +3,12 @@
 #######################################
 # CONSTANTS 
 #######################################
-WORLD_SIZE=512
-ITERATIONS=128
-ITERATIONS_INC=16
+WORLD_SIZE=1024
+ITERATIONS=4096
+ITERATIONS_INC=32
 
-JAVA_VM="java -cp $CLASSPATH:lib/jwormbench.jar:lib/jvstm_with_snapshot_validation.jar"
+JAVA_VM_DBL="java -cp $CLASSPATH:lib/jwormbench.jar:lib/jvstm-dbl.jar"
+JAVA_VM_VSTM=" java -cp $CLASSPATH:lib/jwormbench.jar:lib/jvstm.jar:lib/jwormmodules.jar"
 
 #######################################
 # SET CLASSPATH
@@ -20,13 +21,25 @@ JAVA_VM="java -cp $CLASSPATH:lib/jwormbench.jar:lib/jvstm_with_snapshot_validati
 #######################################
 
 for wRate in 21 22 23; do
-for threads in 1 8 16 24 32 40 48; do
+for threads in 1 2 4 8 10 12 14 16; do
 for i in 1 2 3 4 5 6 7 8; do
 
-iterations=$((threads==1?ITERATIONS:ITERATIONS+(threads*ITERATIONS_INC)))
-${JAVA_VM} jwormbench.app.ConsoleApp -iterations ${iterations} -sync jvstm -threads ${threads} -wRate ${wRate} -world ${WORLD_SIZE} -head 2.16
+# iterations=$((threads==1?ITERATIONS:ITERATIONS+(threads*ITERATIONS_INC)))
+iterations=$(ITERATIONS)
+${JAVA_VM_VSTM} jwormbench.app.ConsoleApp -iterations ${iterations} -sync jvstm -threads ${threads} -wRate ${wRate} -world ${WORLD_SIZE} -head 2.16
 
 done
 done
 done
 
+for wRate in 21 22 23; do
+for threads in 1 2 4 8 10 12 14 16; do
+for i in 1 2 3 4 5 6 7 8; do
+
+# iterations=$((threads==1?ITERATIONS:ITERATIONS+(threads*ITERATIONS_INC)))
+iterations=$(ITERATIONS)
+${JAVA_VM_DBL} jwormbench.app.ConsoleApp -iterations ${iterations} -sync jvstmdbl -threads ${threads} -wRate ${wRate} -world ${WORLD_SIZE} -head 2.16
+
+done
+done
+done
