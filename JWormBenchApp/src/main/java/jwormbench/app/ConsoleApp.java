@@ -41,6 +41,7 @@ import jwormbench.app.config.BenchWithoutSync;
 import jwormbench.app.config.BoostSyncModule;
 import jwormbench.app.config.DeuceSyncModule;
 import jwormbench.app.config.FinelockSyncModule;
+import jwormbench.app.config.JvstmAomSyncModule;
 import jwormbench.app.config.JvstmDblLayoutSyncModule;
 import jwormbench.app.config.JvstmSyncModule;
 import jwormbench.app.config.LockSyncModule;
@@ -65,7 +66,7 @@ public class ConsoleApp {
 	"-world = 512",
 	"-wRate = 22",
 	"-nrOperations = 1920",
-	"-sync = jvstmdbl" //none | jvstm | lock | finelock | deuce | artof-free | artof-lock | tiny-free | tiny-lock
+	"-sync = aom" //none | jvstm | lock | finelock | deuce | artof-free | artof-lock | tiny-free | tiny-lock
     };
 
 
@@ -169,61 +170,41 @@ public class ConsoleApp {
 		    configWorld,
 		    configOperations
 	    );
-	    Module warmConfigModule = new BenchWithoutSync(
-		    1, // number of iterations
-		    1, // number of threads
-		    0, // time out
-		    configWorms,
-		    configWorld,
-		    configOperations);
 	    if(syncStat.equals("none")){
 		//then there is nothing to override.
 	    }
 	    else if(syncStat.equals("lock")){
 		configModule = Modules.override(configModule).with(new LockSyncModule());
-		warmConfigModule = Modules.override(warmConfigModule ).with(new LockSyncModule());
 	    }
 	    else if(syncStat.equals("jvstm")){
 		configModule = Modules.override(configModule).with(new JvstmSyncModule());
-		warmConfigModule = Modules.override(warmConfigModule ).with(new JvstmSyncModule());
 	    }
 	    else if(syncStat.equals("jvstmdbl")){// Depends on project jvstm-doublelayout-v3 - version of Multiprog12 - replicate via array
 		configModule = Modules.override(configModule).with(new JvstmDblLayoutSyncModule());
-		warmConfigModule = Modules.override(warmConfigModule ).with(new JvstmDblLayoutSyncModule());
 	    }
 	    else if(syncStat.equals("aom")){// JVSTM-lockfree-aom with the AOm Compiler v2 - DoubleLayout as root base class 
-		configModule = Modules.override(configModule).with(new JvstmDblLayoutSyncModule());
-		warmConfigModule = Modules.override(warmConfigModule ).with(new JvstmDblLayoutSyncModule());
+		configModule = Modules.override(configModule).with(new JvstmAomSyncModule());
 	    }else if(syncStat.equals("artof-free")){
 		artof.core.Defaults.setModule(new ArtOfTmContentionManagerModule(1, 10));
 		configModule = Modules.override(configModule).with(new ArtOfTmFreeSyncModule());
-		warmConfigModule = Modules.override(warmConfigModule).with(new ArtOfTmFreeSyncModule());
 	    }else if(syncStat.equals("artof-lock")){
 		// não usa o ContentionManager
 		configModule = Modules.override(configModule).with(new ArtOfTmLockSyncModule());
-		warmConfigModule = Modules.override(warmConfigModule ).with(new ArtOfTmLockSyncModule());
 	    }else if(syncStat.equals("tiny-free")){
 		configModule = Modules.override(configModule).with(new TinyTmFreeSyncModule());
-		warmConfigModule = Modules.override(warmConfigModule ).with(new TinyTmFreeSyncModule());
 	    }else if(syncStat.equals("tiny-lock")){
 		configModule = Modules.override(configModule).with(new TinyTmLockSyncModule());
-		warmConfigModule = Modules.override(warmConfigModule ).with(new TinyTmLockSyncModule());
 	    }else if(syncStat.equals("boost")){
 		configModule = Modules.override(configModule).with(new BoostSyncModule());
-		warmConfigModule = Modules.override(warmConfigModule).with(new BoostSyncModule());
 	    }else if(syncStat.equals("finelock")){
 		configModule = Modules.override(configModule).with(new FinelockSyncModule());
-		warmConfigModule = Modules.override(warmConfigModule).with(new FinelockSyncModule());
 	    }else{
 		System.err.println("Unrecognized sync strategy. Will try to load a Java Class with that name as a Guice module.");
 		AbstractModule module = (AbstractModule) Class.forName(syncStat).newInstance();
 		configModule = Modules.override(configModule).with(module);
-		warmConfigModule = Modules.override(warmConfigModule).with(module);
 	    }
 	    Injector injector = Guice.createInjector(configModule );
-	    Injector warmInjector = Guice.createInjector(warmConfigModule);
 	    benchRollout = injector.getInstance(WormBench.class);
-	    benchWarmUp = warmInjector.getInstance(WormBench.class);
 	    logger = injector.getInstance(Logger.class);
 	}
 	//

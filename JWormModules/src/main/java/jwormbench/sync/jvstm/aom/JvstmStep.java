@@ -1,10 +1,9 @@
-package jwormbench.sync.jvstm;
+package jwormbench.sync.jvstm.aom;
 
 import java.util.concurrent.Callable;
 
-import jvstm.Transaction;
+import jvstm.lockfree.Transaction;
 import jwormbench.core.AbstractStep;
-import jwormbench.core.IStep;
 import jwormbench.core.Direction;
 import jwormbench.core.IOperation;
 import jwormbench.core.IWorm;
