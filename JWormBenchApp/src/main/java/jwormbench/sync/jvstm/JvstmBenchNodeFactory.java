@@ -24,15 +24,17 @@ public class JvstmBenchNodeFactory implements INodeFactory{
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // ---------------------- FIELDS --------------------- 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    private VBox<Integer> value = new VBox<Integer>();
+    // private VBox<Integer> value = new VBox<Integer>();
     private IWorm worm;
+    private VBox<Integer> value;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // -------------------   CONSTRUCTOR ----------------- 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     public BenchWorldNode(int value){
-      this.value.put(value);
+      // this.value.put(value);
       worm = null;
+      this.value = new VBox<Integer>(value);
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // -------------------   PROPERTIES  ----------------- 
@@ -47,6 +49,7 @@ public class JvstmBenchNodeFactory implements INodeFactory{
      * @see wormbench.INode#setValue(int)
      */
     public void setValue(int value) {
+      // this.value.put(value);
       this.value.put(value);
     }
     /**

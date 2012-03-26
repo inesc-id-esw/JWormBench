@@ -50,7 +50,7 @@ public class WormBench {
   private final Logger logger;
   private final java.util.List<WormThread> wThreads;
   public final IWorld world;
-  private int initWorldSum;
+  public final int initWorldSum;
   private int timeoutSeconds;
   private long parallelElapsedTime; 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,6 +67,7 @@ public class WormBench {
       @TimeOut int timeoutSeconds
       ){
     this.world = world;
+    this.initWorldSum  = world.getSumOfAllNodes();
     this.wThreads = new LinkedList<WormThread>();
     this.logger = logger;
     this.timeoutSeconds = timeoutSeconds;
@@ -104,8 +105,13 @@ public class WormBench {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // -------------------   METHODS --------------------- 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  public void RunBenchmark(String syncStat, int warmup) throws InterruptedException{
+      int tmp = timeoutSeconds;
+      timeoutSeconds = warmup;
+      RunBenchmark(syncStat);
+      timeoutSeconds = tmp;
+  }
   public void RunBenchmark(String syncStat) throws InterruptedException{
-    initWorldSum  = world.getSumOfAllNodes();
     logger.info(String.format("Benchmark started... World values sum = %d (sync strategy = %s)%s", initWorldSum, syncStat, NEW_LINE));
     Thread[] ths = new Thread[wThreads.size()]; 
     //
@@ -131,11 +137,9 @@ public class WormBench {
         wt.setTimedOut();
       }
     }
-    else{
-      for (Thread wt : ths) {
-        wt.join();
-      }      
-    }
+    for (Thread wt : ths) {
+	wt.join();
+    }      
     parallelElapsedTime = System.nanoTime() - parallelTimeStart;
     logger.info("Benchmark completed..." + NEW_LINE);
   }

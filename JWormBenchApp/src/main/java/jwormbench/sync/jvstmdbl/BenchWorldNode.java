@@ -1,18 +1,11 @@
 package jwormbench.sync.jvstmdbl;
 
-import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import sun.misc.Unsafe;
 import jvstm.dblayout.AbstractDoubleLayout;
 import jvstm.dblayout.DoubleLayout;
 import jvstm.dblcore.VBox;
-import jvstm.dblcore.VBoxBody;
 import jvstm.reflection.UnsafeHolder;
 import jwormbench.core.INode;
 import jwormbench.core.IWorm;
-
 
 /**
  * Abstracts the node object within the BenchWorld.
@@ -34,12 +27,12 @@ public class BenchWorldNode extends AbstractDoubleLayout implements INode, Doubl
   }
 
   @Override
-  public Object[] toExtendedLayout() {
+  public Object[] toExtendedLayout(){
     return new Object[]{this.value};
   }
   @Override
-  public void toStandardLayout(Object[] from) {
-    this.value = (Integer) from[0];
+  public void toCompactLayout(Object[] from){
+    this.value = (Integer) from[value__INDEX__ ];
   }
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,7 +58,7 @@ public class BenchWorldNode extends AbstractDoubleLayout implements INode, Doubl
     // but I made it to avoid reordering mistakes between the 
     // fieldIndex and filedValue arguments.
     //
-    return VBox.getInt(this, value__INDEX__, value__ADDRESS__);
+    return VBox.getInt(this, value__INDEX__ , value__ADDRESS__);
   }
   /**
    * @see wormbench.INode#setValue(int)
@@ -75,7 +68,7 @@ public class BenchWorldNode extends AbstractDoubleLayout implements INode, Doubl
     // but I made it to avoid reordering mistakes between the 
     // fieldIndex and filedValue arguments.
     //
-    VBox.put((Object) newValue, this, value__INDEX__, 1);
+    VBox.put(newValue, this, value__INDEX__, 1);
   }
   /**
    * @see wormbench.INode#getWorm()

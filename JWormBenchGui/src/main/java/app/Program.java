@@ -37,9 +37,10 @@ public class Program {
     });
   }
   public static void main(String[] args) {
-    final String WORLD_CONFIG_FILE = "config/128.txt";
+    final String WORLD_CONFIG_FILE = "config/512.txt";
     // final String WORM_CONFIG_FILE = "config/W-B[1.8]-H[4.16]-32.txt";
-    final String WORM_CONFIG_FILE = "config/W-B[1.8]-H[1.8]-128.txt";
+    // final String WORM_CONFIG_FILE = "config/W-B[1.8]-H[1.8]-128.txt";
+    final String WORM_CONFIG_FILE = "config/W-B[1.1]-H[2.16]-512.txt";
     // final String WORM_CONFIG_FILE = "config/genome_W-B[1.1]-H[32.32]-52.txt";
    
     ICoordinateFactory cordFac =  new DefaultCoordinateFactory();

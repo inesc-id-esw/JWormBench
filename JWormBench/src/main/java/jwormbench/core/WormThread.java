@@ -55,10 +55,11 @@ public class WormThread implements Runnable{
   }
   @Override
   public void run() {
-    accumulatedDiffStateOnWorld = 0;
+    // accumulatedDiffStateOnWorld = 0;
     for (int i = 0; i < stepsCounter.length; i++) {
      stepsCounter[i] = 0;
     }
+    timedOut = false;
     for (int j = 0; (j < iterations) && !timedOut; j++) {
       for (IStep step : operations) {
         if(timedOut) break;
