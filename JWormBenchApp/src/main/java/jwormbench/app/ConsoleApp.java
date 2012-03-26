@@ -42,8 +42,6 @@ import jwormbench.app.config.BoostSyncModule;
 import jwormbench.app.config.DeuceSyncModule;
 import jwormbench.app.config.FinelockSyncModule;
 import jwormbench.app.config.JvstmDblLayoutSyncModule;
-import jwormbench.app.config.JvstmLockfreeDblLayoutSyncModule;
-import jwormbench.app.config.JvstmLockfreeDblLayoutSyncModuleAOM;
 import jwormbench.app.config.JvstmSyncModule;
 import jwormbench.app.config.LockSyncModule;
 import jwormbench.app.config.ArtOfTmContentionManagerModule;
@@ -189,19 +187,14 @@ public class ConsoleApp {
 		configModule = Modules.override(configModule).with(new JvstmSyncModule());
 		warmConfigModule = Modules.override(warmConfigModule ).with(new JvstmSyncModule());
 	    }
-	    else if(syncStat.equals("jvstmdbl")){
+	    else if(syncStat.equals("jvstmdbl")){// Depends on project jvstm-doublelayout-v3 - version of Multiprog12 - replicate via array
 		configModule = Modules.override(configModule).with(new JvstmDblLayoutSyncModule());
 		warmConfigModule = Modules.override(warmConfigModule ).with(new JvstmDblLayoutSyncModule());
 	    }
-	    else if(syncStat.equals("jvstmdbl-lockfree")){ // teste a uma 1ª versão do ExtendedLayout na JVSTM lock-free;
-		configModule = Modules.override(configModule).with(new JvstmLockfreeDblLayoutSyncModule());
-		warmConfigModule = Modules.override(warmConfigModule ).with(new JvstmLockfreeDblLayoutSyncModule());
-	    }
-	    else if(syncStat.equals("jvstmdbl-lockfree-aom")){ // teste a uma 1ª versão do ExtendedLayout na JVSTM lock-free;
-		configModule = Modules.override(configModule).with(new JvstmLockfreeDblLayoutSyncModuleAOM());
-		warmConfigModule = Modules.override(warmConfigModule ).with(new JvstmLockfreeDblLayoutSyncModule());
-	    }
-	    else if(syncStat.equals("artof-free")){
+	    else if(syncStat.equals("aom")){// JVSTM-lockfree-aom with the AOm Compiler v2 - DoubleLayout as root base class 
+		configModule = Modules.override(configModule).with(new JvstmDblLayoutSyncModule());
+		warmConfigModule = Modules.override(warmConfigModule ).with(new JvstmDblLayoutSyncModule());
+	    }else if(syncStat.equals("artof-free")){
 		artof.core.Defaults.setModule(new ArtOfTmContentionManagerModule(1, 10));
 		configModule = Modules.override(configModule).with(new ArtOfTmFreeSyncModule());
 		warmConfigModule = Modules.override(warmConfigModule).with(new ArtOfTmFreeSyncModule());

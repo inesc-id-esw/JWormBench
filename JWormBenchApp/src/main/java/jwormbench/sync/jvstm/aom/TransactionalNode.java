@@ -1,4 +1,4 @@
-package jwormbench.sync.jvstmdbllockfree.aom;
+package jwormbench.sync.jvstm.aom;
 
 import jvstm.lockfree.dblayout.NoSync;
 import jvstm.lockfree.dblayout.Transactional;

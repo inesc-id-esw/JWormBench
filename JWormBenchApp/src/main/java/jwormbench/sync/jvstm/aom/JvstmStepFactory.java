@@ -1,4 +1,4 @@
-package jwormbench.sync.jvstmdbllockfree;
+package jwormbench.sync.jvstm.aom;
 
 import com.google.inject.Inject;
 

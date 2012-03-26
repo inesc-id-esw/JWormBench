@@ -12,14 +12,14 @@ import com.google.inject.Singleton;
  * @author mcarvalho
  *
  */
-public class JvstmDblLayoutSyncModule extends AbstractModule{
+public class JvstmAomSyncModule extends AbstractModule{
   @Override
   protected void configure() {
     bind(IStepFactory.class)
-    .to(jwormbench.sync.jvstmdbl.JvstmStepFactory.class)
+    .to(jwormbench.sync.jvstm.aom.JvstmStepFactory.class)
     .in(Singleton.class);
     bind(INodeFactory.class)
-    .to(jwormbench.sync.jvstmdbl.NodeDoubleLayoutFactory.class)
+    .to(jwormbench.sync.jvstm.aom.TransactionalNodeFactory.class)
     .in(Singleton.class);
   }
 }

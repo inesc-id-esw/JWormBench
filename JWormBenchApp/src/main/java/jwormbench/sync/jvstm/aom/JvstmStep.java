@@ -1,8 +1,8 @@
-package jwormbench.sync.jvstmdbllockfree;
+package jwormbench.sync.jvstm.aom;
 
 import java.util.concurrent.Callable;
 
-import jvstm.lockfree.Transaction;
+import jvstm.dblcore.Transaction;
 import jwormbench.core.AbstractStep;
 import jwormbench.core.Direction;
 import jwormbench.core.IOperation;
