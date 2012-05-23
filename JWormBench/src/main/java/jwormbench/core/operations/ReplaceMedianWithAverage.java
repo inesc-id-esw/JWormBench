@@ -9,19 +9,19 @@ import jwormbench.core.OperationKind;
 import jwormbench.factories.IOperationFactory;
 
 public class ReplaceMedianWithAverage extends AbstractOperation<Integer>{ 
-  IOperationFactory opsFac;
-  public ReplaceMedianWithAverage(IWorld world, IOperationFactory opsFac) {
-    super(world, OperationKind.ReplaceMedianWithAverage, true);
-    this.opsFac = opsFac;
-  }
+    final IOperation<IOperation.Element<ICoordinate, Integer>> opMedian;
+    final IOperation<Integer> opAvg;
+
+    public ReplaceMedianWithAverage(IWorld world, IOperationFactory opsFac) {
+	super(world, OperationKind.ReplaceMedianWithAverage, true);
+	this.opMedian = opsFac.<IOperation.Element<ICoordinate, Integer>>make(OperationKind.Median);
+	this.opAvg = opsFac.<Integer>make(OperationKind.Average);
+    }
+
   @Override
   public Integer performOperation(IWorm w) {
-    IOperation.Element<ICoordinate, Integer> medianElem = opsFac.
-      <IOperation.Element<ICoordinate, Integer>>make(OperationKind.Median).
-      performOperation(w);
-    int avg = opsFac.
-      <Integer>make(OperationKind.Average).
-      performOperation(w);
+    IOperation.Element<ICoordinate, Integer> medianElem = opMedian.performOperation(w);
+    int avg = opAvg.performOperation(w);
     //
     // updates world
     //

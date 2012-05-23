@@ -9,26 +9,25 @@ import jwormbench.core.OperationKind;
 import jwormbench.factories.IOperationFactory;
 
 public class ReplaceMedianWithMax extends AbstractOperation<Integer>{ 
-  IOperationFactory opsFac;
-  public ReplaceMedianWithMax(IWorld world, IOperationFactory opsFac) {
-    super(world, OperationKind.ReplaceMedianWithMax, true);
-    this.opsFac = opsFac;
-  }
-  @Override
-  public Integer performOperation(IWorm w) {
-    IOperation.Element<ICoordinate, Integer> medianElem = opsFac.
-      <IOperation.Element<ICoordinate, Integer>>make(OperationKind.Median).
-      performOperation(w);
-    IOperation.Element<Integer, Integer> maxElem = opsFac.
-      <IOperation.Element<Integer, Integer>>make(OperationKind.Maximum).
-      performOperation(w);
-    //
-    // updates the world 
-    //
-    world.getNode(medianElem.idx).setValue(maxElem.value);
-    //
-    // return the difference between the previous state and the new state of the world. 
-    // 
-    return maxElem.value - medianElem.value;
-  }
+    final IOperation<IOperation.Element<ICoordinate, Integer>> opMedian;
+    final IOperation<IOperation.Element<Integer, Integer>> opMax;
+
+    public ReplaceMedianWithMax(IWorld world, IOperationFactory opsFac) {
+	super(world, OperationKind.ReplaceMedianWithMax, true);
+	this.opMedian = opsFac.<IOperation.Element<ICoordinate, Integer>>make(OperationKind.Median);
+	this.opMax = opsFac.<IOperation.Element<Integer, Integer>>make(OperationKind.Maximum);
+    }
+    @Override
+    public Integer performOperation(IWorm w) {
+	IOperation.Element<ICoordinate, Integer> medianElem = opMedian.performOperation(w);
+	IOperation.Element<Integer, Integer> maxElem = opMax.performOperation(w);
+	//
+	// updates the world 
+	//
+	world.getNode(medianElem.idx).setValue(maxElem.value);
+	//
+	// return the difference between the previous state and the new state of the world. 
+	// 
+	return maxElem.value - medianElem.value;
+    }
 }

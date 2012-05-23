@@ -2,7 +2,7 @@
 	<Project name>: <Project description>
      ====================================================================== -->
 
-<project name="ProjectName" default="test" basedir=".">
+<project name="JWormModules" default="test" basedir=".">
 
   <description>
     Ant build file for ProjectName
@@ -18,7 +18,7 @@
   <property name="target-test-reports"	location="target/test-reports"/>
   <property name="target-apps"	location="target/apps"/>
   <property name="dist-dir" location="dist"/>
-  <property name="jar-file" value="${dist-dir}/ProjectName.jar"/>
+  <property name="jar-file" value="${dist-dir}/jworm-module-aom.jar"/>
 
   <path id="main.extlibs.class.path">
     <fileset dir="vendor/main/lib">

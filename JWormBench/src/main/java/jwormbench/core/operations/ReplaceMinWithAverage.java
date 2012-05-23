@@ -8,19 +8,18 @@ import jwormbench.core.OperationKind;
 import jwormbench.factories.IOperationFactory;
 
 public class ReplaceMinWithAverage extends AbstractOperation<Integer>{ 
-  IOperationFactory opsFac;
+  final IOperation<IOperation.Element<Integer, Integer>> opMin;
+  final IOperation<Integer> opAvg;
+  
   public ReplaceMinWithAverage(IWorld world, IOperationFactory opsFac) {
     super(world, OperationKind.ReplaceMinWithAverage, true);
-    this.opsFac = opsFac;
+    this.opMin = opsFac.<IOperation.Element<Integer, Integer>>make(OperationKind.Minimum);
+    this.opAvg = opsFac.<Integer>make(OperationKind.Average);
   }
   @Override
   public Integer performOperation(IWorm w) {
-    IOperation.Element<Integer, Integer> minElem = opsFac.
-      <IOperation.Element<Integer, Integer>>make(OperationKind.Minimum).
-      performOperation(w);
-    int avg = opsFac.
-      <Integer>make(OperationKind.Average).
-      performOperation(w);
+    IOperation.Element<Integer, Integer> minElem = opMin.performOperation(w);
+    int avg = opAvg.performOperation(w);
     //
     // updates world 
     //

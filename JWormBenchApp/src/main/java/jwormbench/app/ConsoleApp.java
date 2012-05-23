@@ -232,6 +232,12 @@ public class ConsoleApp {
 	// System.out.println("Nr of reversions: " + WriteFieldAccess.nrOfReversions);
     }
     private static void printNrOfObjectsExtendedAnStandard(Logger logger, String syncStat, WormBench benchRollout ){
+	if(syncStat.equals("aom")){
+	    IWorld world = benchRollout.world;
+	    logger.info("Nr of reversions: " + jvstm.lockfree.ActiveTransactionsRecord.nrOfReversions + NEW_LINE);
+	    logger.info("Nr of aborted trxs: " + jvstm.lockfree.Transaction.nrOfAborts+ NEW_LINE);
+	    jvstm.lockfree.Transaction.nrOfAborts = 0;
+	}
 	if(syncStat.equals("jvstmdbl")){
 	    IWorld world = benchRollout.world;
 	    int nrObjectsNormal = 0, nrObjectsExtended = 0;
@@ -253,7 +259,6 @@ public class ConsoleApp {
 	    Transaction.nrOfAborts = 0;
 	    // TopLevelCounter.nrAborts = 0;
 	}
-
     }
 }
 

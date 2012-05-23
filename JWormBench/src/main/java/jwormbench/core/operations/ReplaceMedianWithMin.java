@@ -9,26 +9,25 @@ import jwormbench.core.OperationKind;
 import jwormbench.factories.IOperationFactory;
 
 public class ReplaceMedianWithMin extends AbstractOperation<Integer>{ 
-  IOperationFactory opsFac;
-  public ReplaceMedianWithMin(IWorld world, IOperationFactory opsFac) {
-    super(world, OperationKind.ReplaceMedianWithMin, true);
-    this.opsFac = opsFac;
-  }
+    final IOperation<IOperation.Element<ICoordinate, Integer>> opMedian;
+    final IOperation<IOperation.Element<Integer, Integer>> opMin;
+
+    public ReplaceMedianWithMin(IWorld world, IOperationFactory opsFac) {
+	super(world, OperationKind.ReplaceMedianWithMin, true);
+	this.opMedian = opsFac.<IOperation.Element<ICoordinate, Integer>>make(OperationKind.Median);
+	this.opMin = opsFac.<IOperation.Element<Integer, Integer>>make(OperationKind.Minimum);
+    }
     @Override
-  public Integer performOperation(IWorm w) {
-    IOperation.Element<ICoordinate, Integer> medianElem = opsFac.
-      <IOperation.Element<ICoordinate, Integer>>make(OperationKind.Median).
-      performOperation(w);
-    IOperation.Element<Integer, Integer> minElem = opsFac.
-      <IOperation.Element<Integer, Integer>>make(OperationKind.Minimum).
-      performOperation(w);
-    //
-    // updates world
-    //
-    world.getNode(medianElem.idx).setValue(minElem.value);
-    //
-    // return the difference between the previous state and the new state of the world. 
-    //
-    return minElem.value - medianElem.value;
-  }
+    public Integer performOperation(IWorm w) {
+	IOperation.Element<ICoordinate, Integer> medianElem = opMedian.performOperation(w);
+	IOperation.Element<Integer, Integer> minElem = opMin.performOperation(w);
+	//
+	// updates world
+	//
+	world.getNode(medianElem.idx).setValue(minElem.value);
+	//
+	// return the difference between the previous state and the new state of the world. 
+	//
+	return minElem.value - medianElem.value;
+    }
 }
