@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>jwormbench</groupId>
+    <artifactId>jwormbench</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0</version>
+    <name>JWormBench</name>
+    <url>http://inesc-id-esw.github.io/jwormbench/</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <project.deploy.maven-repo>file:///${basedir}/../../jwormbench-pages/maven-repo</project.deploy.maven-repo>
+
+        <version.guice>2.0</version.guice>
+        <version.junit>4.10</version.junit>
+        <version.maven.exec-plugin>1.2.1</version.maven.exec-plugin>
+    </properties>
+
+    <scm>
+        <connection>scm:git:git@github.com:inesc-id-esw/jwormbench.git</connection>
+        <developerConnection>scm:git:git@github.com:inesc-id-esw/jwormbench.git</developerConnection>
+        <url>https://github.com/inesc-id-esw/jwormbench</url>
+        <tag>jwormbench-1.0</tag>
+    </scm>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <pushChanges>false</pushChanges>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${version.guice}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <!--
+        note: making a release of this software on GitHub's gh-pages branch
+        requires an existing clone of such branch in another directory in your
+        computer, and then to configure the property
+        ${project.deploy.maven-repo} to point to the maven repository within
+        such location. E.g.:
+
+             .
+             |__ jwormbench
+             |   \__ ...
+             |__ jwormbench-pages
+                 |__ ...
+                 \__ maven-repo
+
+         Then just run `mvn clean deploy` in the checkout you wish to deploy :-)
+    -->
+
+    <distributionManagement>
+        <repository>
+            <id>gh-pages</id>
+            <url>${project.deploy.maven-repo}</url>
+        </repository>
+        <snapshotRepository>
+            <id>gh-pages</id>
+            <url>${project.deploy.maven-repo}</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>
