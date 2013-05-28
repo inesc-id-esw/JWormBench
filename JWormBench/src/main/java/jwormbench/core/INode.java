@@ -26,9 +26,6 @@
  */
 package jwormbench.core;
 
-import org.deuce.transform.NoSyncArray;
-
-@NoSyncArray
 public interface INode {
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

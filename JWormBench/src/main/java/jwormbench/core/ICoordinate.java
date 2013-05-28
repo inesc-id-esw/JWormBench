@@ -1,7 +1,5 @@
 package jwormbench.core;
 
-import org.deuce.transform.Exclude;
-
 public interface ICoordinate {
 
   public abstract int getX();
