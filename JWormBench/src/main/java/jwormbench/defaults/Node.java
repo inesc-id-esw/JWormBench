@@ -1,7 +1,5 @@
 package jwormbench.defaults;
 
-import org.deuce.transform.NoSyncArray;
-
 import jwormbench.core.INode;
 import jwormbench.core.IWorm;
 
@@ -10,7 +8,6 @@ import jwormbench.core.IWorm;
  * 
  * @author F. Miguel Carvalho mcarvalho[@]cc.isel.pt 
  */
-@NoSyncArray
 public class Node implements INode{
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // ---------------------- FIELDS --------------------- 
