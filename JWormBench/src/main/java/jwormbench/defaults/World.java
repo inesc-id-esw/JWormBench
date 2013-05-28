@@ -1,5 +1,7 @@
 package jwormbench.defaults;
 
+import java.lang.reflect.Field;
+
 import com.google.inject.Inject;
 
 import jwormbench.core.IWorld;
@@ -17,7 +19,7 @@ public class World implements IWorld {
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // ---------------------- FIELDS --------------------- 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  final INode[][] world;
+  private final INode[][] world;
   final int rowsNum;
   final int columnsNum;
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,8 +28,23 @@ public class World implements IWorld {
   @Inject
   public World(IWorlSetup bwSetup) {
     this.world = bwSetup.loadWorld();
-    rowsNum = world.length;
-    columnsNum = world[0].length;
+    rowsNum= 0; columnsNum = 0;
+    init();
+  }
+  
+  public void init(){
+      try {
+        Field fRowsNum = World.class.getDeclaredField("rowsNum");
+        fRowsNum.setAccessible(true);
+        Field fColumnsNum = World.class.getDeclaredField("columnsNum");
+        fColumnsNum.setAccessible(true);
+        fRowsNum.set(this, world.length);
+        fColumnsNum.set(this, world[0].length);
+    }
+    catch (NoSuchFieldException e) {throw new RuntimeException(e);}
+    catch (SecurityException e) {throw new RuntimeException(e);} 
+    catch (IllegalArgumentException e) {throw new RuntimeException(e);}
+    catch (IllegalAccessException e) {throw new RuntimeException(e);}
   }
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // -------------------  PROPERTIES   ----------------- 
@@ -60,6 +77,7 @@ public class World implements IWorld {
   public INode getNode(ICoordinate c){
     return getNode(c.getX(), c.getY());
   }
+  
   @Override
   public int getSumOfAllNodes() {
     int total = 0;

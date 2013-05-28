@@ -30,6 +30,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 
 import com.google.inject.Inject;
@@ -81,7 +83,13 @@ public class StepsFileLoader implements IStepSetup{
     BufferedReader reader;
     String line = null;
     public OperationsFileIterator(String wormsConfigFile) throws IOException{
-      reader = new BufferedReader(new FileReader(wormsConfigFile));
+      InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(wormsConfigFile);
+      if(in == null){
+          throw new OperationsLoadingFileException(
+                  new FileNotFoundException(
+                          wormsConfigFile + " file not found!")); 
+      }
+      reader = new BufferedReader(new InputStreamReader(in));
       do{ 
         line = reader.readLine();
       }while(line != null && !line.isEmpty() && line.charAt(0) == '#');

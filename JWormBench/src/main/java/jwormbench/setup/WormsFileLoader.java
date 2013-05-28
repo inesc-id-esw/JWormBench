@@ -30,6 +30,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 
 import com.google.inject.Inject;
@@ -198,7 +200,8 @@ public class WormsFileLoader implements IWormsSetup{
     BufferedReader reader;
     String line = null;
     public WormFileIterator(String wormsConfigFile) throws IOException{
-      reader = new BufferedReader(new FileReader(wormsConfigFile));
+      InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(wormsConfigFile);
+      reader = new BufferedReader(new InputStreamReader(in));
       do{ 
         line = reader.readLine();
       }while(line != null && line.charAt(0) == '#');

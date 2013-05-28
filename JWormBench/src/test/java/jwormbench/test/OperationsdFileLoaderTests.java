@@ -23,12 +23,12 @@ import org.junit.Test;
 
 
 public class OperationsdFileLoaderTests {
-	static final  String CONFIG_FILE_NAME = "OperationsFileLoaderUT_config.txt"; 
+	static final  String CONFIG_FILE_NAME = "config/OperationsFileLoaderUT_config.txt"; 
 	File configFile;
 	
 	@Before
 	public void setupTest() throws IOException{
-		configFile = new File(CONFIG_FILE_NAME);
+		configFile = new File("target/classes/" + CONFIG_FILE_NAME);
 		configFile.createNewFile();
 	}
 	

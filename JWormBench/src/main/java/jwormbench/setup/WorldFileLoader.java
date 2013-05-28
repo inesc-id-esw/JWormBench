@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import com.google.inject.Inject;
 
@@ -35,7 +37,11 @@ public class WorldFileLoader implements IWorlSetup{
     int rowsNum = 0, columnsNum = 0;
     BufferedReader reader = null;
     try {
-      reader = new BufferedReader(new FileReader(configFile));
+      InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(configFile);
+      if(in == null)
+          throw new BenchWorldLoadingFileException(
+                  new FileNotFoundException(configFile + " file not found!"));
+      reader = new BufferedReader(new InputStreamReader(in));
       String line = reader.readLine();
       line = line.trim();
       if (line != null && line.length() > 0 && line.indexOf('x') >= 0){

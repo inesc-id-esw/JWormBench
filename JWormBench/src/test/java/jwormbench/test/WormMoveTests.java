@@ -47,12 +47,12 @@ public class WormMoveTests {
     }
   }  
   
-  static final  String CONFIG_FILE_NAME = "WormFileLoaderUT_config.txt"; 
+  static final  String CONFIG_FILE_NAME = "config/WormFileLoaderUT_config.txt"; 
   File configFile;
   
   @Before
   public void setupTest() throws IOException{
-    configFile = new File(CONFIG_FILE_NAME);
+    configFile = new File("target/classes/" + CONFIG_FILE_NAME);
     configFile.createNewFile();
   }
   @After
