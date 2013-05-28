@@ -3,7 +3,7 @@
     <groupId>jwormbench</groupId>
     <artifactId>jwormbench</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>JWormBench</name>
     <url>http://inesc-id-esw.github.io/jwormbench/</url>
 
@@ -22,7 +22,7 @@
         <connection>scm:git:git@github.com:inesc-id-esw/jwormbench.git</connection>
         <developerConnection>scm:git:git@github.com:inesc-id-esw/jwormbench.git</developerConnection>
         <url>https://github.com/inesc-id-esw/jwormbench</url>
-        <tag>HEAD</tag>
+        <tag>jwormbench-1.0</tag>
     </scm>
 
     <build>
